@@ -11,68 +11,65 @@
             background: #030510;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column; /* Блоки идут сверху вниз */
+            align-items: center;
             padding: 40px 20px;
             color: white;
-            overflow-x: hidden;
+            will-change: scroll-position;
         }
 
-        /* 🔵 ПЛАВАЮЩИЕ ШАРЫ */
+        /* 🔵 ФОНОВЫЕ ШАРЫ */
         .blob {
-            position: fixed;
-            border-radius: 50%;
+            position: fixed; border-radius: 50%;
             background: radial-gradient(circle, #1e3a6b 0%, transparent 70%);
-            filter: blur(80px);
-            opacity: 0.4;
-            z-index: 0;
-            pointer-events: none;
+            filter: blur(80px); opacity: 0.4; z-index: 0; pointer-events: none;
             animation: float infinite alternate ease-in-out;
+            will-change: transform, opacity;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            opacity: 0.99; 
+            will-change: transform, opacity;
+            transform: translate3d(0, 0, 0);
         }
-
-        .blob-1 { width: 400px; height: 400px; top: -10%; left: -10%;   animation-duration: 14s; opacity: 0.35; }
-        .blob-2 { width: 300px; height: 300px; top: 10%;  right: -5%;    animation-duration: 18s; opacity: 0.4;  animation-delay: -3s; }
-        .blob-3 { width: 500px; height: 500px; bottom: -15%; left: 20%;  animation-duration: 22s; opacity: 0.3;  animation-delay: -7s; }
-        .blob-4 { width: 250px; height: 250px; top: 50%;  right: 10%;    animation-duration: 12s; opacity: 0.45; animation-delay: -5s; }
-        .blob-5 { width: 350px; height: 350px; bottom: 5%; left: -5%;    animation-duration: 20s; opacity: 0.35; animation-delay: -9s; }
-        .blob-6 { width: 200px; height: 200px; top: 30%;  left: 40%;     animation-duration: 16s; opacity: 0.4;  animation-delay: -2s; }
+        .blob-1 { width: 400px; height: 400px; top: -10%; left: -10%; animation-duration: 14s; }
+        .blob-2 { width: 300px; height: 300px; top: 10%; right: -5%; animation-duration: 18s; animation-delay: -3s; }
+        .blob-3 { width: 500px; height: 500px; bottom: -15%; left: 20%; animation-duration: 22s; animation-delay: -7s; }
+        .blob-4 { width: 250px; height: 250px; top: 50%; right: 10%; animation-duration: 12s; animation-delay: -5s; }
+        .blob-5 { width: 350px; height: 350px; bottom: 5%; left: -5%; animation-duration: 20s; animation-delay: -9s; }
+        .blob-6 { width: 200px; height: 200px; top: 30%; left: 40%; animation-duration: 16s; animation-delay: -2s; }
 
         @keyframes float {
-            0%   { transform: translate(0, 0) scale(1);    }
-            33%  { transform: translate(30px, -40px) scale(1.1);  }
-            66%  { transform: translate(-20px, 25px) scale(0.95); }
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -40px) scale(1.1); }
+            66% { transform: translate(-20px, 25px) scale(0.95); }
             100% { transform: translate(15px, -15px) scale(1.05); }
         }
 
-        /* КАРТОЧКА */
+        /* ОБЩИЕ СТИЛИ ДЛЯ КАРТОЧЕК */
         .card {
             background: rgba(12, 18, 40, 0.65);
-            backdrop-filter: blur(25px);            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(42, 80, 170, 0.2);
-            border-radius: 35px;
-            width: 100%;
-            max-width: 400px;
-            padding: 30px;
-            text-align: center;
-            z-index: 10;
-            position: relative;
+            width: 100%; max-width: 400px; padding: 30px;
+            text-align: center; z-index: 10; position: relative;
             box-shadow: 0 8px 40px rgba(30, 58, 107, 0.15);
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            isolation: isolate;
         }
+        /* ПРОФИЛЬ (Сильное скругление) */
+        .card-profile { border-radius: 35px; margin-bottom: 20px; }
+        
+        /* ПУБЛИКАЦИИ (Отдельная карточка) */
+        .card-posts { border-radius: 35px; }
 
         /* АВАТАРКА */
         .ava {
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            margin: 0 auto 15px;
+            width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 15px;
             background: linear-gradient(135deg, #0a1025, #0f1835);
             border: 2px solid rgba(42, 80, 170, 0.4);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: bold;
-            color: #4a7adb;
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+            font-size: 32px; font-weight: bold; color: #4a7adb;
             box-shadow: 0 0 20px rgba(30, 58, 107, 0.3);
         }
         .ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -80,46 +77,26 @@
         .ava.no-image .placeholder { display: block; }
         .ava.no-image img { display: none; }
 
-        /* ИМЯ + ГАЛОЧКА (не кликабельная) */
-        .name-wrapper { 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 6px;
-            margin: 10px 0 20px;
-            cursor: default;
-        }
+        /* ИМЯ + ГАЛОЧКА */
+        .name-wrapper { display: inline-flex; align-items: center; gap: 6px; margin: 10px 0 20px; cursor: default; }
         .name { font-size: 26px; font-weight: 300; letter-spacing: 0.5px; }
-
-        /* Шестиугольная галочка */
-        .verify-badge {
-            width: 20px; height: 20px; flex-shrink: 0;
-            filter: drop-shadow(0 0 3px rgba(42, 80, 170, 0.5));
-        }
-
-        /* ОБЛАЧКО (теперь на имя без галочки) */        .name-clickable { position: relative; cursor: pointer; }
+        .verify-badge { width: 20px; height: 20px; flex-shrink: 0; filter: drop-shadow(0 0 3px rgba(42, 80, 170, 0.5)); }
+        
         .bubble {
-            position: absolute; bottom: 130%; left: 50%;
-            transform: translateX(-50%) scale(0.8);
+            position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%) scale(0.8);
             background: rgba(5, 8, 18, 0.95); border: 1px solid #2a50aa;
-            padding: 8px 14px; border-radius: 12px; font-size: 12px;
-            white-space: nowrap; opacity: 0; pointer-events: none;
-            transition: all 0.2s ease; z-index: 100;
+            padding: 8px 14px; border-radius: 12px; font-size: 12px; white-space: nowrap;
+            opacity: 0; pointer-events: none; transition: all 0.2s ease; z-index: 100;
             box-shadow: 0 4px 20px rgba(30, 58, 107, 0.3);
         }
         .bubble.active { opacity: 1; transform: translateX(-50%) scale(1); }
 
         /* ИНФЫ */
         .info-group {
-            background: rgba(42, 80, 170, 0.06);
-            border: 1px solid rgba(42, 80, 170, 0.12);
-            border-radius: 18px;
-            padding: 4px;
-            margin-bottom: 16px;
-            overflow: hidden;
+            background: rgba(42, 80, 170, 0.06); border: 1px solid rgba(42, 80, 170, 0.12);
+            border-radius: 18px; padding: 4px; margin-bottom: 16px; overflow: hidden; text-align: left;
         }
-        .info-row {
-            padding: 14px 16px; position: relative; text-align: left;
-        }
+        .info-row { padding: 14px 16px; position: relative; }
         .info-row:not(:last-child)::after {
             content: ''; position: absolute; bottom: 0; left: 16px; right: 16px;
             height: 1px; background: rgba(42, 80, 170, 0.1);
@@ -127,127 +104,129 @@
         .label { color: #4a7adb; font-size: 11px; margin-bottom: 3px; display: block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
         .value { opacity: 0.9; font-size: 14px; line-height: 1.4; word-break: break-word; color: rgba(255,255,255,0.85); }
 
-        /* 🟦 БЛОК "ОФИЦИАЛЬНЫЙ АККАУНТ" */
-        .verified-section {
-            display: flex; align-items: center; gap: 10px;
-            padding: 14px 16px;
-            background: rgba(42, 80, 170, 0.04);
-            border: 1px solid rgba(42, 80, 170, 0.08);
-            border-radius: 16px;
-            margin-bottom: 20px;
-            text-align: left;
+        /* БЛОК ОФИЦИАЛЬНОСТИ */
+        .verified-section {            display: flex; align-items: center; gap: 10px; padding: 14px 16px;
+            background: rgba(42, 80, 170, 0.04); border: 1px solid rgba(42, 80, 170, 0.08);
+            border-radius: 16px; margin-bottom: 20px; text-align: left;
         }
-        .verified-section .v-icon {
-            width: 22px; height: 22px; flex-shrink: 0;
-            opacity: 0.55;
-        }
-        .verified-section .v-text {
-            font-size: 13px; line-height: 1.45;
-            color: rgba(255, 255, 255, 0.45);
-        }
+        .verified-section .v-icon { width: 22px; height: 22px; flex-shrink: 0; opacity: 0.55; }
+        .verified-section .v-text { font-size: 13px; line-height: 1.45; color: rgba(255, 255, 255, 0.45); }
+
         /* СОЦСЕТИ */
         .social-section { margin-top: 24px; }
-        .section-header {
-            display: flex; align-items: center; gap: 10px;
-            margin-bottom: 10px; padding-left: 6px;
-        }
-        .section-header::before {
-            content: ''; flex: 1; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(42, 80, 170, 0.25), transparent);
-        }
-        .section-header span {
-            color: rgba(255, 255, 255, 0.3); font-size: 10px;
-            text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;
-        }
+        .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-left: 6px; }
+        .section-header::before { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(42, 80, 170, 0.25), transparent); }
+        .section-header span { color: rgba(255, 255, 255, 0.3); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
         .social-list {
-            background: rgba(42, 80, 170, 0.06);
-            border: 1px solid rgba(42, 80, 170, 0.12);
-            border-radius: 18px; overflow: hidden;
-            display: flex; flex-direction: column;
+            background: rgba(42, 80, 170, 0.06); border: 1px solid rgba(42, 80, 170, 0.12);
+            border-radius: 18px; overflow: hidden; display: flex; flex-direction: column;
         }
         .social-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 15px 16px; text-decoration: none; color: white;
-            transition: 0.2s ease; position: relative;
-            border-bottom: 1px solid rgba(42, 80, 170, 0.1);
+            display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+            text-decoration: none; color: white; transition: 0.2s ease;
+            border-bottom: 1px solid rgba(42, 80, 170, 0.1); font-size: 13px;
         }
         .social-item:last-child { border-bottom: none; }
         .social-item:hover { background: rgba(42, 80, 170, 0.12); }
-        .social-item .icon { font-size: 18px; min-width: 22px; text-align: center; }
+        .social-item .icon { font-size: 16px; min-width: 20px; text-align: center; }
         .social-item .name { font-weight: 500; flex: 1; text-align: left; }
-        .social-item .arrow { opacity: 0.3; font-size: 12px; transition: 0.2s; color: #4a7adb; }
+        .social-item .arrow { opacity: 0.3; font-size: 11px; transition: 0.2s; color: #4a7adb; }
         .social-item:hover .arrow { opacity: 0.8; transform: translateX(2px); }
+
+        /* ПУБЛИКАЦИИ (ВНУТРИ ОТДЕЛЬНОЙ КАРТОЧКИ) */
+        .posts-section { text-align: left; }
+        .posts-header {
+            display: flex; justify-content: flex-start; align-items: center;
+            margin-bottom: 16px; padding-right: 4px;
+        }
+        .posts-header span {
+            color: rgba(255, 255, 255, 0.6); font-size: 13px;
+            text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+        }
+        
+        .post-card {
+            background: rgba(15, 22, 50, 0.5);
+            border: 1px solid rgba(42, 80, 170, 0.12);
+            border-radius: 18px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+        
+        /* Мини-аватарка в посте */
+        .post-ava {
+            width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;            background: linear-gradient(135deg, #0a1025, #0f1835);
+            border: 1.5px solid rgba(42,80,170,0.4);
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: bold; color: #4a7adb;
+        }
+        .post-ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .post-ava .placeholder { display: none; }
+        .post-ava.no-image .placeholder { display: block; }
+        .post-ava.no-image img { display: none; }
+
+        .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .post-meta { display: flex; flex-direction: column; }
+        .post-author { display: flex; align-items: center; gap: 5px; font-weight: 600; font-size: 14px; }
+        .post-author svg { width: 15px; height: 15px; }
+        .post-date { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 1px; }
+        .post-text { font-size: 13.5px; line-height: 1.5; color: rgba(255,255,255,0.85); word-break: break-word; }
+
+        .toggle-btn {
+            width: 100%; padding: 10px; border: 1px dashed rgba(42, 80, 170, 0.3);
+            background: rgba(42, 80, 170, 0.03); color: #4a7adb; border-radius: 12px;
+            font-size: 12px; cursor: pointer; transition: 0.2s; margin-top: 5px;
+        }
+        .toggle-btn:hover { background: rgba(42, 80, 170, 0.1); border-color: #4a7adb; }
 
         @media (max-width: 480px) {
             .card { padding: 25px 20px; border-radius: 28px; }
-            .name { font-size: 24px; }
-            .ava { width: 90px; height: 90px; }
+            .name { font-size: 24px; } .ava { width: 90px; height: 90px; }
         }
     </style>
 </head>
 <body onclick="hideBubble()">
 
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="blob blob-4"></div>
-    <div class="blob blob-5"></div>
-    <div class="blob blob-6"></div>
+    <div class="blob blob-1"></div> <div class="blob blob-2"></div> <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div> <div class="blob blob-5"></div> <div class="blob blob-6"></div>
 
-    <div class="card" onclick="event.stopPropagation()">        <!-- АВАТАРКА -->
+    <!-- БЛОК 1: ПРОФИЛЬ -->
+    <div class="card card-profile" onclick="event.stopPropagation()">
         <div class="ava" id="avatar">
             <img src="ava.jpg" alt="Avatar" onerror="this.parentElement.classList.add('no-image')">
             <span class="placeholder">D</span>
         </div>
 
-        <!-- ИМЯ + ГАЛОЧКА (не кликабельная) -->
         <div class="name-wrapper">
-            <span class="name">𝙳𝚎𝚗</span>
-            <!-- Галочка рядом — просто стоит, не кликабельна -->
+            <span class="name" onclick="showBubble(event)">𝙳𝚎𝚗</span>
+            <div id="pop" class="bubble">Владелец домена</div>
             <div class="verify-badge">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L20.66 7V17L12 22L3.34 17V7L12 2Z" fill="#2a50aa"/>
-                    <path d="M7 12.2L10.5 15.5L17 8.8" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L20.66 7V17L12 22L3.34 17V7L12 2Z" fill="#2a50aa"/><path d="M7 12.2L10.5 15.5L17 8.8" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             </div>
         </div>
-
-        <!-- ИНФЫ -->
         <div class="info-group">
-            <div class="info-row">
-                <span class="label">Bio</span>
-                <div class="value">Здравствуйте! 👋 В основном занимаюсь оформлением Telegram и графическим дизайном 🧑‍🎨</div>
-            </div>
-            <div class="info-row">
-                <span class="label">Скилл / Работа</span>
-                <div class="value">Дизайнер • Промпт-инженер</div>
-            </div>
-            <div class="info-row">
-                <span class="label">Юзернеймы</span>
-                <div class="value">@XsDen, @buysfact</div>
-            </div>
-            <div class="info-row">
-                <span class="label">Адрес</span>
-                <div class="value">Лланвайрпуллгуингиллгогерихуирндробуллллантисилиогогого́х, Уэльс</div>
-            </div>
+            <div class="info-row"><span class="label">Bio</span><div class="value">Здравствуйте! 👋 В основном занимаюсь оформлением Telegram и графическим дизайном ‍🎨</div></div>
+            <div class="info-row"><span class="label">Скилл / Работа</span><div class="value">Дизайнер • Промпт-инженер</div></div>
+            <div class="info-row"><span class="label">Юзернеймы</span><div class="value">@XsDen, @buysfact</div></div>
+            <div class="info-row"><span class="label">Адрес</span><div class="value">Лланвайрпуллгуингиллгогерихуирндробуллллантисилиогогого́х, Уэльс</div></div>
         </div>
 
-        <!--  ОФИЦИАЛЬНЫЙ АККАУНТ (как на скрине Telegram) -->
         <div class="verified-section">
-            <div class="v-icon">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L20.66 7V17L12 22L3.34 17V7L12 2Z" fill="rgba(42, 80, 170, 0.6)"/>
-                    <path d="M7 12.2L10.5 15.5L17 8.8" stroke="rgba(255,255,255,0.7)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-            </div>            <div class="v-text">
-                Официальный владелец домена.
-            </div>
+            <div class="v-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L20.66 7V17L12 22L3.34 17V7L12 2Z" fill="rgba(42, 80, 170, 0.6)"/><path d="M7 12.2L10.5 15.5L17 8.8" stroke="rgba(255,255,255,0.7)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
+            <div class="v-text">Официальный владелец домена.</div>
         </div>
 
-        <!-- СОЦСЕТИ -->
         <div class="social-section">
             <div class="section-header"><span>Связь</span></div>
             <div class="social-list" id="socials"></div>
+        </div>
+    </div>
+
+    <!-- БЛОК 2: ПУБЛИКАЦИИ (ОТДЕЛЬНО) -->
+    <div class="card card-posts" onclick="event.stopPropagation()">
+        <div class="posts-section">
+            <div class="posts-header"><span>Публикации</span></div>
+            <div id="posts-container"></div>
+            <button id="toggle-posts" class="toggle-btn" style="display: none;"></button>
         </div>
     </div>
 
@@ -256,30 +235,85 @@
             avatar: "ava.jpg",
             initials: "D",
             socials: [
-                { name: "Telegram канал Сезонные темы", url: "https://t.me/TgThen", icon: "💬" }
+                { name: "ТГК Сезонные темы", url: "https://t.me/XsDen", icon: "🎨" },
             ]
         };
 
+        const posts = [
+            { text: "Здравствуйте всем! Это первая публикация на сайте, здесь будут новости и много чего интересного.", date: "2026-05-4 18:51:00" }
+        ];
+
         function renderSocials() {
-            document.getElementById('socials').innerHTML = config.socials.map(s => `
+            const container = document.getElementById('socials');
+            if (!container) return;
+            container.innerHTML = config.socials.map(s => `
                 <a href="${s.url}" class="social-item" target="_blank" rel="noopener">
-                    <span class="icon">${s.icon}</span>
-                    <span class="name">${s.name}</span>
-                    <span class="arrow">➔</span>
-                </a>
+                    <span class="icon">${s.icon}</span><span class="name">${s.name}</span><span class="arrow"></span>                </a>
             `).join('');
         }
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+            const day = d.getDate();
+            const month = months[d.getMonth()];
+            const year = d.getFullYear();
+            const hours = String(d.getHours()).padStart(2, '0');
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+            return `${day} ${month} ${year} года в ${hours}:${minutes}`;
+        }
+
+        let showAll = false;
+        function renderPosts() {
+            const container = document.getElementById('posts-container');
+            const btn = document.getElementById('toggle-posts');
+            if (!container || !btn) return;
+            
+            const limit = 3;
+            const list = showAll ? posts : posts.slice(0, limit);
+
+            container.innerHTML = list.map(p => `
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-ava">
+                            <img src="${config.avatar}" onerror="this.parentElement.classList.add('no-image')">
+                            <span class="placeholder">D</span>
+                        </div>
+                        <div class="post-meta">
+                            <div class="post-author">
+                                𝙳𝚎𝚗
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L20.66 7V17L12 22L3.34 17V7L12 2Z" fill="#2a50aa"/><path d="M7 12.2L10.5 15.5L17 8.8" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                            </div>
+                            <div class="post-date">${formatDate(p.date)}</div>
+                        </div>
+                    </div>
+                    <div class="post-text">${p.text}</div>
+                </div>
+            `).join('');
+
+            if (posts.length > limit) {
+                btn.style.display = 'block';
+                btn.textContent = showAll ? 'Скрыть' : `+ Показать ещё (${posts.length - limit})`;
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+        document.getElementById('toggle-posts').onclick = () => {
+            showAll = !showAll;
+            renderPosts();
+        };
 
         function setupAvatar() {
             const avatar = document.getElementById('avatar');
             const img = avatar.querySelector('img');
             if (config.avatar && config.avatar !== "ava.jpg") img.src = config.avatar;
         }
-
         function showBubble(e) { e.stopPropagation(); document.getElementById('pop').classList.toggle('active'); }
         function hideBubble() { document.getElementById('pop').classList.remove('active'); }
 
-        document.addEventListener('DOMContentLoaded', () => { setupAvatar(); renderSocials(); });
+        document.addEventListener('DOMContentLoaded', () => { 
+            setupAvatar(); renderSocials(); renderPosts(); 
+        });
     </script>
 </body>
 </html>
