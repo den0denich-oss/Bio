@@ -96,8 +96,7 @@
 
         .logo-blue {
             color: var(--accent);
-        }
-        .logo-white {
+        }        .logo-white {
             color: var(--text-primary);
         }
 
@@ -244,8 +243,7 @@
             transition: all 0.3s ease;
             opacity: 0;
             transform: translateY(30px);
-        }
-        .publication-card.animate {
+        }        .publication-card.animate {
             animation: slideUpFade 0.6s ease-out forwards;
         }
 
@@ -293,8 +291,8 @@
             gap: 10px;
             padding: 15px 40px;
             background: rgba(59, 130, 246, 0.08);
-            border: 1px solid rgba(59, 130, 246, 0.25);            border-radius: 50px;
-            color: var(--accent);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 50px;            color: var(--accent);
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
@@ -342,8 +340,8 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            text-decoration: none;            color: var(--text-primary);
-            font-weight: 500;
+            text-decoration: none;
+            color: var(--text-primary);            font-weight: 500;
             font-size: 1.05rem;
             transition: all 0.3s ease;
             opacity: 0;
@@ -392,8 +390,7 @@
 
         .footer-left a:hover { opacity: 0.8; }
         .footer-right {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+            color: var(--text-secondary);            font-size: 0.9rem;
         }
 
         /* Scroll reveal */
@@ -411,13 +408,38 @@
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
-                gap: 15px;
+                gap: 12px;
                 top: 10px;
             }
+            
+            nav {
+                padding: 6px 10px;
+                gap: 8px;
+                width: fit-content;
+                margin: 0 auto;
+                max-width: 98%;
+                border-radius: 20px;
+            }
+            
+            nav a {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .nav-indicator {
+                height: 32px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            .description {
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+            
             .publications-grid, .social-grid {
                 grid-template-columns: 1fr;
-            }
-            .publications-container, .contact-container {
+            }            .publications-container, .contact-container {
                 padding: 20px;
             }
             footer {
@@ -440,7 +462,8 @@
             <div class="nav-indicator" id="navIndicator"></div>
             <a href="#" class="nav-link active" data-section="about">Главная</a>
             <a href="#publications" class="nav-link" data-section="publications">Публикации</a>
-            <a href="#contact" class="nav-link" data-section="contact">Связь</a>        </nav>
+            <a href="#contact" class="nav-link" data-section="contact">Связь</a>
+        </nav>
     </header>
 
     <main>
@@ -465,8 +488,7 @@
             </button>
         </section>
 
-        <!-- Связь -->
-        <section id="contact">
+        <!-- Связь -->        <section id="contact">
             <h2 class="section-title reveal">Связь</h2>
             <div class="contact-container reveal">
                 <div class="social-grid" id="socialGrid"></div>
@@ -515,8 +537,7 @@
             const [hours, minutes] = timePart.split(':');
             const date = new Date(year, month - 1, day);
             const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-            return `${date.getDate()} ${months[date.getMonth()]} ${year} года в ${hours}:${minutes}`;
-        }
+            return `${date.getDate()} ${months[date.getMonth()]} ${year} года в ${hours}:${minutes}`;        }
 
         // === PUBLICATIONS RENDER ===
         function renderPublications() {
@@ -532,7 +553,8 @@
                 card.className = 'publication-card';
                 card.style.animationDelay = `${i * 0.1}s`;
                 if (i >= visibleLimit && !showingAllPublications) card.classList.add('hidden');
-                card.innerHTML = `<div class="pub-title">${pub.title}</div><div class="pub-excerpt">${pub.excerpt}</div><div class="pub-date">${formatDate(pub.date)}</div>`;                grid.appendChild(card);
+                card.innerHTML = `<div class="pub-title">${pub.title}</div><div class="pub-excerpt">${pub.excerpt}</div><div class="pub-date">${formatDate(pub.date)}</div>`;
+                grid.appendChild(card);
             });
             updateShowMoreButton();
             observeElements();
@@ -564,8 +586,7 @@
         // === SOCIAL LINKS RENDER ===
         function renderSocialLinks() {
             const grid = document.getElementById('socialGrid');
-            grid.innerHTML = '';
-            CONFIG.socialLinks.forEach((link, i) => {
+            grid.innerHTML = '';            CONFIG.socialLinks.forEach((link, i) => {
                 const a = document.createElement('a');
                 a.href = link.url;
                 a.className = 'social-card';
@@ -581,7 +602,8 @@
         // === SCROLL REVEAL OBSERVER ===
         function observeElements() {
             const obs = new IntersectionObserver((entries) => {
-                entries.forEach(e => {                    if (e.isIntersecting) { e.target.classList.add('animate', 'active'); }
+                entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('animate', 'active'); }
                     else { e.target.classList.remove('animate', 'active'); }
                 });
             }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
@@ -613,8 +635,7 @@
             const scrollPos = window.scrollY + window.innerHeight * 0.45;
             let current = 'about';
 
-            for (let i = sections.length - 1; i >= 0; i--) {
-                const sec = document.getElementById(sections[i]);
+            for (let i = sections.length - 1; i >= 0; i--) {                const sec = document.getElementById(sections[i]);
                 if (sec && sec.offsetTop <= scrollPos) {
                     current = sections[i];
                     break;
